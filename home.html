@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneaker Lab</title>
+    <style>
+        /* Fontes importadas */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&display=swap');
+        
+        /* Fonte Urban Blocker */
+        @font-face {
+            font-family: 'Urban Blocker';
+            src: url('https://dl.dafont.com/dl/?f=urban_blocker') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-blue: #0088ff;
+            --dark-bg: #0a0a12;
+            --panel-bg: #121225;
+            --input-bg: #1e1e3a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* NOVO LOGO GRAFITE CYBERPUNK */
+        .logo {
+            display: flex;
+            align-items: center;
+            height: 60px;
+            text-decoration: none;
+            position: relative;
+        }
+        
+        .logo-text {
+            font-family: 'Urban Blocker', 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            padding: 0 10px;
+        }
+        
+        .logo-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="black" stroke-width="1" opacity="0.1"/></svg>');
+            background-size: 20px 20px;
+            mix-blend-mode: overlay;
+            z-index: -1;
+        }
+        
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 10px;
+            width: calc(100% - 20px);
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), transparent);
+            border-radius: 3px;
+            filter: blur(1px);
+        }
+        
+        .logo:hover .logo-text {
+            animation: text-glitch 0.3s infinite alternate;
+        }
+        
+        @keyframes text-glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-1px, 1px); }
+            40% { transform: translate(-1px, -1px); }
+            60% { transform: translate(1px, 1px); }
+            80% { transform: translate(1px, -1px); }
+            100% { transform: translate(0); }
+        }
+        
+        /* Efeito de spray/grafite */
+        .logo-spray {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .logo-spray::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: radial-gradient(circle at center, 
+                transparent 0%, 
+                rgba(0, 255, 255, 0.1) 30%, 
+                transparent 70%);
+            filter: blur(5px);
+        }
+
+        /* NAVBAR */
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        nav a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue));
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* SECTION TITLES */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), transparent);
+            border-radius: 3px;
+            animation: typing 3s infinite;
+        }
+        
+        @keyframes typing {
+            0% { width: 0; opacity: 0; }
+            5% { opacity: 1; }
+            50% { width: 100%; opacity: 1; }
+            95% { opacity: 1; }
+            100% { width: 0; opacity: 0; }
+        }
+
+        /* BODY & BACKGROUND */
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(0, 136, 255, 0.05) 0%, transparent 20%);
+        }
+        
+        .cyberpunk-glitch {
+            position: relative;
+        }
+        
+        .cyberpunk-glitch::before, .cyberpunk-glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .cyberpunk-glitch::before {
+            color: var(--neon-blue);
+            animation: glitch-effect 3s infinite;
+            z-index: -1;
+        }
+        
+        .cyberpunk-glitch::after {
+            color: var(--neon-cyan);
+            animation: glitch-effect 2s infinite reverse;
+            z-index: -2;
+        }
+        
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+        }
+        
+        .neon-border {
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), inset 0 0 10px var(--neon-blue);
+        }
+        
+        /* HEADER */
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(10, 10, 18, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 136, 255, 0.3);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        .btn-primary {
+            background-color: var(--neon-cyan);
+            color: var(--dark-bg);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--neon-blue);
+            color: var(--dark-bg);
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+        }
+        
+        .btn-link {
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            padding: 0.6rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            z-index: 10;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .hero-image {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40%;
+            max-width: 600px;
+            z-index: 5;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* BACKGROUND ELEMENTS */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 136, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 136, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0, 255, 255, 0.1) 50%,
+                transparent 100%
+            );
+            animation: scan 8s linear infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        @keyframes scan {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+        
+        /* FEATURES SECTION */
+        .features {
+            padding: 5rem 5%;
+            background-color: var(--panel-bg);
+            position: relative;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: rgba(18, 18, 37, 0.7);
+            padding: 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 136, 255, 0.3);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 136, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            z-index: -1;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--neon-cyan);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--neon-blue);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+        }
+        
+        .feature-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* TRENDING PRODUCTS */
+        .trending {
+            padding: 5rem 5%;
+            position: relative;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background-color: rgba(18, 18, 37, 0.7);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 136, 255, 0.3);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 136, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+        }
+        
+        .product-price {
+            color: var(--neon-cyan);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* FOOTER */
+        footer {
+            background-color: var(--panel-bg);
+            padding: 3rem 5%;
+            text-align: center;
+            position: relative;
+            border-top: 1px solid rgba(0, 136, 255, 0.3);
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        .footer-links a:hover {
+            color: var(--neon-cyan);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background-color: var(--neon-cyan);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* PARTICLE EFFECTS */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float-particle infinite alternate ease-in-out;
+        }
+        
+        @keyframes float-particle {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-20px) translateX(10px); }
+        }
+
+        /* FLYING SHOE EFFECT */
+        .shoe-container {
+            position: absolute;
+            right: -300px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-30deg);
+            z-index: 1000;
+            width: 250px;
+            height: auto;
+            opacity: 0;
+            animation: fly-in 3s ease-in-out forwards;
+            filter: drop-shadow(0 0 10px var(--neon-cyan)) drop-shadow(0 0 20px var(--neon-blue));
+        }
+
+        @keyframes fly-in {
+            0% {
+                right: -300px;
+                transform: translateY(-50%) rotate(-30deg);
+                opacity: 0;
+            }
+            70% {
+                right: 100px;
+                transform: translateY(-50%) rotate(0deg);
+                opacity: 1;
+            }
+            85% {
+                right: 80px;
+                transform: translateY(-50%) rotate(0deg) scale(1.1);
+            }
+            100% {
+                right: 50px;
+                transform: translateY(-50%) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero-image {
+                width: 50%;
+                opacity: 0.7;
+            }
+
+            .shoe-container {
+                width: 200px;
+            }
+
+            .logo-text {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 100px;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+                margin-bottom: 3rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
+                width: 80%;
+                margin: 0 auto;
+            }
+            
+            nav ul {
+                display: none;
+            }
+
+            .shoe-container {
+                width: 150px;
+            }
+
+            .logo-text {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn, .btn-link {
+                width: 100%;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .shoe-container {
+                width: 120px;
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-lines"></div>
+    <div class="scanline"></div>
+    <div class="particles" id="particles"></div>
+    
+    <header>
+        <a href="index.html" class="logo">
+            <div class="logo-spray"></div>
+            <div class="logo-text">SNEAKERLAB</div>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="#">Explorar</a></li>
+                <li><a href="#">Categorias</a></li>
+                <li><a href="#">Vendedores</a></li>
+                <li><a href="#">Sobre</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-link btn-outline">Login</a>
+            <a href="cadastro.html" class="btn-link btn-primary">Cadastre-se</a>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="cyberpunk-glitch" data-text="BEM-VINDO AO FUTURO">BEM-VINDO AO FUTURO</h1>
+            <p>O MarketPlace definitivo para produtos high-tech, moda cyberpunk e itens de realidade virtual. Conecte-se com vendedores de todo o mundo em um ecossistema descentralizado e seguro.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">Explorar Produtos</button>
+                <button class="btn btn-outline">Tornar-se Vendedor</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://www.pngmart.com/files/21/Air-Jordan-PNG-Isolated-HD.png" alt="MarketPlace Cyberpunk">
+        </div>
+    </section>
+    
+    <section class="features">
+        <h2 class="section-title">POR QUE ESCOLHER NOSSO MARKETPLACE</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Transações Rápidas</h3>
+                <p class="feature-desc">Nossa tecnologia blockchain garante transações quase instantâneas com taxas mínimas.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Segurança Cibernética</h3>
+                <p class="feature-desc">Proteção avançada contra hackers com criptografia quântica de última geração.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">Realidade Aumentada</h3>
+                <p class="feature-desc">Visualize produtos em seu espaço antes de comprar com nossa tecnologia AR.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">Assistentes AI</h3>
+                <p class="feature-desc">Nossos assistentes virtuais ajudam você a encontrar exatamente o que precisa.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="trending">
+        <h2 class="section-title">PRODUTOS EM ALTA</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="https://droper-media.s3.amazonaws.com/2122021174447486.jpeg" alt="Nike Air Force 1 Pink Bag" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Nike Air Force 1 Pink Bag</h3>
+                    <div class="product-price">R$800</div>
+                    <div class="product-meta">
+                        <span>⭐ 4.9 (128)</span>
+                        <span>🔋 12 Mil vendidos</span>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://acdn-us.mitiendanube.com/stores/001/966/867/products/0461-b5e6ef6dad74aecd0516585265557413-640-0.png" alt="Tênis Nike Travis Scott" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Tênis Nike Travis Scott</h3>
+                    <div class="product-price">R$2000</div>
+                    <div class="product-meta">
+                        <span>⭐ 4.7 (95)</span>
+                        <span>🔋 8 Mil vendidos</span>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://acdn-us.mitiendanube.com/stores/002/280/944/products/img_3343-e2dbf3cc0cf612c7a417193744469471-1024-1024.jpeg" alt="Adi2000" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Tênis Adidas Adi2000</h3>
+                    <div class="product-price">R$950</div>
+                    <div class="product-meta">
+                        <span>⭐ 4.8 (156)</span>
+                        <span>🔋 6 Mil vendidos</span>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://www.tnsdojota.com/wp-content/uploads/2024/06/e496a299.jpeg" alt="Tn drifit" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title"> Nike Tn Drift Concord</h3>
+                    <div class="product-price">R$1200</div>
+                    <div class="product-meta">
+                        <span>⭐ 4.9 (201)</span>
+                        <span>🔋 5 Mil vendidos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <a href="index.html" class="footer-logo">Sneaker<span>Lab</span></a>
+        <div class="footer-links">
+            <a href="#">Termos de Serviço</a>
+            <a href="#">Política de Privacidade</a>
+            <a href="#">FAQ</a>
+            <a href="#">Suporte</a>
+            <a href="#">Carreiras</a>
+            <a href="#">Blog</a>
+        </div>
+        <div class="social-links">
+            <a href="#" class="social-link">📱</a>
+            <a href="#" class="social-link">💻</a>
+            <a href="#" class="social-link">🕶️</a>
+            <a href="#" class="social-link">🤖</a>
+        </div>
+        <p class="copyright">© 2025 SneakerLab. Todos os direitos reservados. Operando na rede blockchain NeonChain.</p>
+    </footer>
+    
+    <script>
+        // Criar partículas
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            const size = Math.random() * 2 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            
+            const duration = Math.random() * 10 + 5;
+            particle.style.animationDuration = `${duration}s`;
+            
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Efeito de digitação para o título
+        const glitchText = document.querySelector('.cyberpunk-glitch');
+        const originalText = glitchText.textContent;
+        let isGlitching = false;
+        
+        function startRandomGlitch() {
+            if (isGlitching) return;
+            
+            isGlitching = true;
+            let glitchTextContent = '';
+            const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/';
+            
+            for (let i = 0; i < originalText.length; i++) {
+                if (Math.random() > 0.7) {
+                    glitchTextContent += chars.charAt(Math.floor(Math.random() * chars.length));
+                } else {
+                    glitchTextContent += originalText.charAt(i);
+                }
+            }
+            
+            glitchText.textContent = glitchTextContent;
+            
+            setTimeout(() => {
+                glitchText.textContent = originalText;
+                isGlitching = false;
+            }, 100);
+        }
+        
+        setInterval(startRandomGlitch, 3000);
+
+        // Efeito do tênis voador
+        document.addEventListener('DOMContentLoaded', function() {
+            const shoeContainer = document.getElementById('shoeContainer');
+            
+            if (shoeContainer) {
+                setTimeout(() => {
+                    shoeContainer.style.display = 'block';
+                    
+                    shoeContainer.addEventListener('animationend', function() {
+                        this.style.animation = 'none';
+                        this.style.right = '50px';
+                        this.style.transform = 'translateY(-50%) rotate(0deg)';
+                    });
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
