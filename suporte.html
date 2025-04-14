@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte - SneakerLab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Montserrat:wght@400;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-blue: #0088ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #8a2be2;
+            --dark-bg: #0a0a12;
+            --panel-bg: rgba(18, 18, 37, 0.85);
+            --input-bg: rgba(30, 30, 58, 0.7);
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+        }
+        
+        /* Estilo do logo modificado */
+        .sneakerlab-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        
+        .sneakerlab-logo a {
+            font-family: 'Bungee', cursive;
+            font-size: 1.8rem;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            padding: 0 5px;
+        }
+        
+        .sneakerlab-logo a:hover {
+            color: white;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.9);
+            animation: logoPulse 0.5s ease-in-out;
+        }
+        
+        @keyframes logoPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .sneakerlab-logo a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-cyan);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .sneakerlab-logo a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Restante do CSS permanece igual */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+        }
+        
+        /* Fundo de galáxia animado */
+        #galaxy {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        /* Estrelas */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        
+        .stars::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 160px 120px, white, rgba(0,0,0,0));
+            background-size: 200px 200px;
+            animation: twinkle 4s infinite;
+        }
+        
+        .stars:nth-child(2)::after {
+            background-image: 
+                radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 90px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 150px 40px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 180px 100px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 80px 180px, white, rgba(0,0,0,0));
+            animation-delay: 1s;
+            opacity: 0.7;
+        }
+        
+        .stars:nth-child(3)::after {
+            background-image: 
+                radial-gradient(1px 1px at 30px 20px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 70px 50px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 120px 80px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 160px 20px, white, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 30px 180px, white, rgba(0,0,0,0));
+            animation-delay: 2s;
+            opacity: 0.5;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+        
+        /* Nebulosa */
+        .nebula {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: drift 60s infinite linear;
+        }
+        
+        .nebula:nth-child(1) {
+            background: var(--neon-cyan);
+            top: 20%;
+            left: 10%;
+            transform: scale(1.5);
+        }
+        
+        .nebula:nth-child(2) {
+            background: var(--neon-pink);
+            top: 60%;
+            left: 70%;
+            transform: scale(2);
+            animation-delay: -20s;
+        }
+        
+        .nebula:nth-child(3) {
+            background: var(--neon-purple);
+            top: 30%;
+            left: 50%;
+            transform: scale(1.8);
+            animation-delay: -40s;
+        }
+        
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, 30px) scale(1.1); }
+            50% { transform: translate(0, 50px) scale(1); }
+            75% { transform: translate(-30px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        
+        /* Efeitos de glitch e scanlines */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(0deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+            animation: scan 8s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+        
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            background-color: var(--panel-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            padding: 2.5rem;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .container:hover {
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.4), 
+                        0 0 30px rgba(255, 0, 255, 0.2);
+        }
+        
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-cyan), transparent);
+            animation: typing 3s steps(20) infinite;
+        }
+        
+        @keyframes typing {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+        
+        p.subtitle {
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        #contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        
+        .form-group {
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--neon-cyan);
+            transition: width 0.3s ease;
+        }
+        
+        .form-group:focus-within::before {
+            width: 100%;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--neon-cyan);
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--input-bg);
+            border: 1px solid #2a2a4a;
+            border-radius: 5px;
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            border: none;
+            border-radius: 5px;
+            color: #0a0a12;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-transform: uppercase;
+        }
+        
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #00e6e6, #0077e6);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            transform: translateY(-2px);
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #response-message {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            min-height: 1.2rem;
+            color: var(--neon-pink);
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        #response-message.show {
+            opacity: 1;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        
+        .social-link {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--input-bg);
+            border: 1px solid #2a2a4a;
+            position: relative;
+            overflow: hidden;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        
+        .social-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .social-link:hover {
+            background-color: var(--neon-cyan);
+            color: var(--dark-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            border-color: var(--neon-cyan);
+        }
+        
+        .social-link:hover::before {
+            transform: translateX(100%);
+        }
+        
+        /* Efeito de glitch ocasional */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        .glitch-effect {
+            animation: glitch 0.5s linear infinite;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                max-width: 90%;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            p.subtitle {
+                font-size: 0.9rem;
+            }
+            
+            /* Ajuste para o logo em mobile */
+            .sneakerlab-logo {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .sneakerlab-logo a {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo SneakerLab adicionado no topo -->
+    <div class="sneakerlab-logo">
+        <a href="home.html">SneakerLab</a>
+    </div>
+    
+    <!-- Fundo de galáxia animado -->
+    <div id="galaxy">
+        <div class="stars"></div>
+        <div class="stars"></div>
+        <div class="stars"></div>
+        <div class="nebula"></div>
+        <div class="nebula"></div>
+        <div class="nebula"></div>
+    </div>
+
+    <main>
+        <div class="container" id="contactContainer">
+            <h1 id="contactTitle">Suporte</h1>
+            <p class="subtitle">Tem alguma dúvida ou sugestão? Preencha o formulário abaixo e entraremos em contato!</p>
+
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" required placeholder="Seu nome completo">
+                    <span class="error-message" id="name-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                    <span class="error-message" id="email-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Mensagem</label>
+                    <textarea id="message" name="message" required placeholder="Digite sua mensagem aqui..."></textarea>
+                    <span class="error-message" id="message-error"></span>
+                </div>
+
+                <button type="submit" id="submitBtn">
+                    <span id="buttonText">Enviar Mensagem</span>
+                </button>
+
+                <p id="response-message"></p>
+            </form>
+
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efeito de glitch aleatório no título
+            const contactTitle = document.getElementById('contactTitle');
+            
+            setInterval(() => {
+                if (Math.random() > 0.95) {
+                    contactTitle.classList.add('glitch-effect');
+                    setTimeout(() => {
+                        contactTitle.classList.remove('glitch-effect');
+                    }, 500);
+                }
+            }, 5000);
+            
+            // Efeito de hover 3D no container
+            const contactContainer = document.getElementById('contactContainer');
+            
+            contactContainer.addEventListener('mousemove', (e) => {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                contactContainer.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+            
+            contactContainer.addEventListener('mouseenter', () => {
+                contactContainer.style.transition = 'none';
+            });
+            
+            contactContainer.addEventListener('mouseleave', () => {
+                contactContainer.style.transition = 'transform 0.5s ease';
+                contactContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            });
+            
+            // Animação de digitação no título
+            let titles = ["SUPORTE", "AJUDA", "CONTATO", "ASSISTÊNCIA"];
+            let currentTitle = 0;
+            
+            setInterval(() => {
+                currentTitle = (currentTitle + 1) % titles.length;
+                contactTitle.textContent = titles[currentTitle];
+                
+                // Reinicia a animação de digitação
+                contactTitle.style.animation = 'none';
+                void contactTitle.offsetWidth; // Trigger reflow
+                contactTitle.style.animation = null;
+            }, 4000);
+            
+            // Formulário de contato
+            const contactForm = document.getElementById('contact-form');
+            const submitBtn = document.getElementById('submitBtn');
+            const responseMessage = document.getElementById('response-message');
+            
+            // Validação em tempo real
+            document.getElementById('name').addEventListener('input', validateName);
+            document.getElementById('email').addEventListener('input', validateEmail);
+            document.getElementById('message').addEventListener('input', validateMessage);
+            
+            function validateName() {
+                const nameInput = document.getElementById('name');
+                const nameError = document.getElementById('name-error');
+                if (nameInput.value.trim() === '') {
+                    nameError.textContent = 'Por favor, insira seu nome';
+                    return false;
+                } else {
+                    nameError.textContent = '';
+                    return true;
+                }
+            }
+            
+            function validateEmail() {
+                const emailInput = document.getElementById('email');
+                const emailError = document.getElementById('email-error');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (emailInput.value.trim() === '') {
+                    emailError.textContent = 'Por favor, insira seu e-mail';
+                    return false;
+                } else if (!emailRegex.test(emailInput.value)) {
+                    emailError.textContent = 'Por favor, insira um e-mail válido';
+                    return false;
+                } else {
+                    emailError.textContent = '';
+                    return true;
+                }
+            }
+            
+            function validateMessage() {
+                const messageInput = document.getElementById('message');
+                const messageError = document.getElementById('message-error');
+                if (messageInput.value.trim() === '') {
+                    messageError.textContent = 'Por favor, insira sua mensagem';
+                    return false;
+                } else if (messageInput.value.length < 10) {
+                    messageError.textContent = 'A mensagem deve ter pelo menos 10 caracteres';
+                    return false;
+                } else {
+                    messageError.textContent = '';
+                    return true;
+                }
+            }
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validar todos os campos
+                const isNameValid = validateName();
+                const isEmailValid = validateEmail();
+                const isMessageValid = validateMessage();
+                
+                if (!isNameValid || !isEmailValid || !isMessageValid) {
+                    responseMessage.textContent = 'Por favor, preencha todos os campos corretamente';
+                    responseMessage.classList.add('show');
+                    setTimeout(() => {
+                        responseMessage.classList.remove('show');
+                    }, 3000);
+                    return;
+                }
+                
+                // Efeito de clique no botão
+                submitBtn.style.transform = 'translateY(2px)';
+                setTimeout(() => {
+                    submitBtn.style.transform = 'translateY(-2px)';
+                }, 100);
+                
+                // Simular envio do formulário
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO...';
+                submitBtn.disabled = true;
+                
+                // Simular requisição AJAX
+                setTimeout(() => {
+                    // Mostrar mensagem de sucesso
+                    responseMessage.textContent = 'Mensagem enviada com sucesso! Entraremos em contato em breve.';
+                    responseMessage.style.color = 'var(--neon-cyan)';
+                    responseMessage.classList.add('show');
+                    
+                    // Resetar formulário
+                    contactForm.reset();
+                    submitBtn.innerHTML = '<span id="buttonText">ENVIAR MENSAGEM</span>';
+                    submitBtn.disabled = false;
+                    
+                    // Esconder mensagem após alguns segundos
+                    setTimeout(() => {
+                        responseMessage.classList.remove('show');
+                    }, 5000);
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>

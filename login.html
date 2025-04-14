@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Fontes atualizadas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>CyberAccess Login</title>
+    <style>
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-blue: #0088ff;
+            --dark-bg: #0a0a12;
+            --panel-bg: #121225;
+            --input-bg: #1e1e3a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* LOGO ATUALIZADO */
+        .sneakerlab-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        
+        .sneakerlab-logo a {
+            font-family: 'Bungee', cursive;
+            font-size: 1.8rem;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            letter-spacing: 1px;
+            display: inline-block;
+            position: relative;
+            padding: 0 5px;
+            transition: all 0.3s ease;
+        }
+
+        .sneakerlab-logo a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-cyan);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .sneakerlab-logo a:hover {
+            color: rgb(255, 255, 255);
+            text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-blue);
+        }
+
+        .sneakerlab-logo a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Efeito de pulso no hover */
+        @keyframes logoPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .sneakerlab-logo a:hover {
+            animation: logoPulse 0.5s ease-in-out;
+        }
+        
+        /* CORPO PRINCIPAL */
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(0, 136, 255, 0.05) 0%, transparent 20%);
+            position: relative;
+        }
+        
+        /* Efeitos de glitch e scanlines */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(0deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+            animation: scan 8s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+        
+        /* Partículas animadas */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: var(--neon-cyan);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            display: flex;
+            background-color: var(--panel-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .container:hover {
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.4);
+        }
+        
+        .image {
+            flex: 1;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 45%,
+                rgba(0, 255, 255, 0.1) 50%,
+                transparent 55%
+            );
+            animation: shine 6s infinite;
+            z-index: 0;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-30%, -30%); }
+            100% { transform: rotate(360deg) translate(-30%, -30%); }
+        }
+        
+        .image img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.7));
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease, filter 0.5s ease;
+        }
+        
+        .image:hover img {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 25px rgba(0, 255, 255, 0.9));
+        }
+        
+        .form-container {
+            flex: 1;
+            padding: 3rem 2rem;
+            background-color: #16162a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, transparent 95%, rgba(0, 255, 255, 0.1) 100%);
+            animation: scanline 3s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        h1 {
+            font-family: 'Bungee', cursive;
+            color: var(--neon-cyan);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-cyan), transparent);
+            animation: typing 3s steps(20) infinite;
+        }
+        
+        @keyframes typing {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+        
+        p {
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .inputs {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .inputs::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--neon-cyan);
+            transition: width 0.3s ease;
+        }
+        
+        .inputs:focus-within::before {
+            width: 100%;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            background-color: var(--input-bg);
+            border: 1px solid #2a2a4a;
+            border-radius: 5px;
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+        
+        .remfor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .remember {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember input {
+            width: auto;
+            margin-right: 10px;
+            accent-color: var(--neon-cyan);
+            cursor: pointer;
+        }
+        
+        .remember label {
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-family: 'Bungee', cursive;
+            font-size: 0.9rem;
+        }
+        
+        .remember:hover label {
+            color: var(--neon-cyan);
+        }
+        
+        .forget a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            font-family: 'Bungee', cursive;
+            font-size: 0.9rem;
+        }
+        
+        .forget a::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--neon-cyan);
+            transition: width 0.3s ease;
+        }
+        
+        .forget a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        
+        .forget a:hover::after {
+            width: 100%;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            border: none;
+            border-radius: 5px;
+            color: #0a0a12;
+            font-family: 'Bungee', cursive;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-transform: uppercase;
+        }
+        
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #00e6e6, #0077e6);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            transform: translateY(-2px);
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .sign {
+            text-align: center;
+            position: relative;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Bungee', cursive;
+        }
+        
+        .sign::before, .sign::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        }
+        
+        .sign::before {
+            left: 0;
+        }
+        
+        .sign::after {
+            right: 0;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        
+        .social-icons div {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--input-bg);
+            border: 1px solid #2a2a4a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-icons div::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .social-icons div:hover {
+            background-color: var(--neon-cyan);
+            color: var(--dark-bg);
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            border-color: var(--neon-cyan);
+        }
+        
+        .social-icons div:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .social-icons i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icons div:hover i {
+            transform: scale(1.2);
+        }
+        
+        /* Efeito de glitch ocasional */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        .glitch-effect {
+            animation: glitch 0.5s linear infinite;
+        }
+        
+        /* Modal de sucesso */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 10, 18, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .success-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .success-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 3rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+            transform: scale(0.8);
+            transition: transform 0.5s ease;
+        }
+        
+        .success-modal.active .success-content {
+            transform: scale(1);
+        }
+        
+        .success-content::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 45%,
+                rgba(0, 255, 255, 0.1) 50%,
+                transparent 55%
+            );
+            animation: shine 6s infinite;
+            z-index: 0;
+        }
+        
+        .success-content h2 {
+            font-family: 'Bungee', cursive;
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .success-content p {
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .success-content button {
+            max-width: 200px;
+            margin: 0 auto;
+            font-family: 'Bungee', cursive;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .image {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            /* Ajuste para o logo em mobile */
+            .sneakerlab-logo {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .sneakerlab-logo a {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo SneakerLab animado no topo -->
+    <div class="sneakerlab-logo">
+        <a href="home.html">SNEAKERLAB</a>
+    </div>
+    
+    <!-- Efeito de partículas -->
+    <div class="particles" id="particles"></div>
+    
+    <nav>
+        <div class="container" id="loginContainer">
+            <div class="image">
+                <img src="https://i.pinimg.com/originals/e4/26/70/e426702edf874b181aced1e2fa5c6cde.gif" alt="Cyberpunk Cityscape">
+            </div>
+            <form id="loginForm">
+                <div class="form-container">
+                    <h1 id="loginTitle">ACCESS</h1>
+                    <p>Authenticate to enter the neural network</p>
+                    <div class="inputs">
+                        <input type="email" placeholder="Email" id="email" required>
+                    </div>
+                    <div class="inputs">
+                        <input type="password" placeholder="Password" id="password" required>
+                    </div>
+                    <div class="remfor">
+                        <div class="remember">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Keep Me Logged In</label>
+                        </div>
+                        <div class="forget">
+                            <a href="#" id="forgotPassword">Forget Password?</a>
+                        </div>
+                    </div>
+                    <button type="submit" id="loginBtn">CONNECT</button>
+                    <p class="sign">Or Sign Up With</p>
+                    <div class="social-icons">
+                        <div class="facebook"><i class="fa-brands fa-facebook-f"></i></div>
+                        <div class="twitter"><i class="fa-brands fa-x-twitter"></i></div>
+                        <div class="google"><i class="fa-brands fa-google"></i></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </nav>
+    
+    <!-- Modal de sucesso -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <h2>ACCESS GRANTED</h2>
+            <p>Authentication successful. Welcome to the system.</p>
+            <button id="closeModal">CONTINUE</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Criar partículas
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamanho aleatório entre 1px e 3px
+                const size = Math.random() * 2 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posição aleatória
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Duração da animação aleatória
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Atraso aleatório
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Efeito de glitch aleatório no título
+            const loginTitle = document.getElementById('loginTitle');
+            
+            setInterval(() => {
+                if (Math.random() > 0.95) {
+                    loginTitle.classList.add('glitch-effect');
+                    setTimeout(() => {
+                        loginTitle.classList.remove('glitch-effect');
+                    }, 500);
+                }
+            }, 5000);
+            
+            // Efeito de hover 3D no container
+            const loginContainer = document.getElementById('loginContainer');
+            
+            loginContainer.addEventListener('mousemove', (e) => {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                loginContainer.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+            
+            loginContainer.addEventListener('mouseenter', () => {
+                loginContainer.style.transition = 'none';
+            });
+            
+            loginContainer.addEventListener('mouseleave', () => {
+                loginContainer.style.transition = 'transform 0.5s ease';
+                loginContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            });
+            
+            // Animação de digitação no título
+            let titles = ["ACCESS", "AUTHENTICATE", "WELCOME", "LOGIN"];
+            let currentTitle = 0;
+            
+            setInterval(() => {
+                currentTitle = (currentTitle + 1) % titles.length;
+                loginTitle.textContent = titles[currentTitle];
+                
+                // Reinicia a animação de digitação
+                loginTitle.style.animation = 'none';
+                void loginTitle.offsetWidth; // Trigger reflow
+                loginTitle.style.animation = null;
+            }, 4000);
+            
+            // Efeito de clique no botão de login
+            const loginBtn = document.getElementById('loginBtn');
+            const loginForm = document.getElementById('loginForm');
+            const successModal = document.getElementById('successModal');
+            const closeModal = document.getElementById('closeModal');
+            
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Efeito de clique
+                loginBtn.style.transform = 'translateY(2px)';
+                setTimeout(() => {
+                    loginBtn.style.transform = 'translateY(-2px)';
+                }, 100);
+                
+                // Validar formulário
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                if (email && password) {
+                    // Simular processamento
+                    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CONNECTING...';
+                    
+                    setTimeout(() => {
+                        // Mostrar modal de sucesso
+                        successModal.classList.add('active');
+                        loginBtn.innerHTML = 'CONNECT';
+                    }, 1500);
+                }
+            });
+            
+            // Fechar modal
+            closeModal.addEventListener('click', () => {
+                successModal.classList.remove('active');
+            });
+            
+            // Efeito de hover nos ícones sociais
+            const socialIcons = document.querySelectorAll('.social-icons div');
+            
+            socialIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', () => {
+                    const iconElement = icon.querySelector('i');
+                    
+                    // Pequena animação de salto
+                    iconElement.style.transform = 'translateY(-5px)';
+                    setTimeout(() => {
+                        iconElement.style.transform = 'translateY(0)';
+                    }, 300);
+                });
+            });
+            
+            // Efeito de esquecimento de senha
+            const forgotPassword = document.getElementById('forgotPassword');
+            
+            forgotPassword.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Efeito visual
+                const inputs = document.querySelectorAll('.inputs input');
+                inputs.forEach(input => {
+                    input.style.animation = 'glitch 0.5s linear';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                    }, 500);
+                });
+                
+                // Mensagem
+                alert('Password reset initiated. Neural link established with your cyberdeck.');
+            });
+            
+            // Efeito de foco nos inputs
+            const inputs = document.querySelectorAll('input');
+            
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('active');
+                });
+                
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('active');
+                });
+            });
+
+            // Efeito de digitação no logo (executa apenas uma vez ao carregar)
+            const logo = document.querySelector('.sneakerlab-logo a');
+            const originalText = logo.textContent;
+            logo.textContent = '';
+            
+            let i = 0;
+            const typingEffect = setInterval(() => {
+                if (i < originalText.length) {
+                    logo.textContent += originalText[i];
+                    i++;
+                } else {
+                    clearInterval(typingEffect);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
